@@ -65,6 +65,7 @@ def get_course_list(urllist,project_name,csv_class_list):
 
                             regex = re.compile(r"[1-9]+[A-Z]?")
                             matches = re.findall(regex, string)
+                            print(matches,string)
                             for match in matches:
                                 if match[0] not in matches:
                                     matches.append(match[0])
@@ -91,7 +92,7 @@ def read_class_list(project_name, csv_class_list):
         return list(readCSV)
         # print(readCSV)
 
-get_course_list(URL,PROJECT_NAME,CSV_CLASS_LIST)
+# get_course_list(URL,PROJECT_NAME,CSV_CLASS_LIST)
 # read_class_list(PROJECT_NAME, CSV_CLASS_LIST)
 
 

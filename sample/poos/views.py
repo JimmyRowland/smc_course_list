@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Question, Choice, CourseList
+from .models import Question, Choice
 from django.shortcuts import render
 from django.shortcuts import get_list_or_404
 from django.http import HttpResponseRedirect
