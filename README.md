@@ -1,0 +1,1 @@
+smc_course_list
