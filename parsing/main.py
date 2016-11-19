@@ -31,7 +31,6 @@ GRADE_ALL_JSON = 'allGrade.json'
 JSON_NEW_DICT_PROFESSOR='newProfessor.json'
 JSON_CHANGED_NAME_PROFESSOR="changedNameProfessor.json"
 CSV_NEW_CLASS_LIST='finalClassList.csv'
-JSON_NEW_CLASS_LIST='finalClassList.json'
 JSON_EASYUI_NEW_CLASS_LIST='finalEasyuiClassList.json'
 # read_Professor(PROJECT_NAME,Json_RATEMYPROFESSOR)
 # read_grade(PROJECT_NAME,GRADE_ALL_JSON)
@@ -135,42 +134,6 @@ def read_final_class_list(project_name,new_class_list):
         # print(list(csvdata))
         return list(csvdata)
 
-def csv_to_json(project_name,json_new_class_list):
-    list = []
-    pk=1
-    finalCourseList = read_final_class_list(PROJECT_NAME,CSV_NEW_CLASS_LIST)
-    print(finalCourseList)
-    for course in finalCourseList:
-        coursedict = {}
-        coursedict['department_text'] = course[0]
-        coursedict['course_text']=course[1]
-        coursedict['igetc_text'] = course[2]
-        coursedict['session_id'] = int(course[3])
-        coursedict['schedule_text'] = course[4]
-        coursedict['location_text'] = course[5]
-        coursedict['instructor_text'] = course[6]
-        coursedict['grade_A_num'] = int(course[7])
-        coursedict['grade_B_num'] = int(course[8])
-        coursedict['grade_C_num'] = int(course[9])
-        coursedict['grade_P_num'] = int(course[10])
-        coursedict['grade_total_num'] = int(course[11])
-        coursedict['grade_A_rate'] = int(course[12])
-        coursedict['grade_gt_B_rate'] = int(course[13])
-        coursedict['grade_gt_C_rate'] = int(course[14])
-        coursedict['grade_gt_P_rate'] = int(course[15])
-        coursedict['rating_num_text'] = course[16]
-        coursedict['url_text'] = course[17]
-        coursedict['instructor_department_text'] = course[18]
-        coursedict['lname_text'] = course[19]
-        coursedict['fname_text'] = course[20]
-        coursedict['tid_id'] = int(course[21])
-        coursedict['votes_num'] = int(course[22])
-        list.append({"model":"poos.CourseList",'pk':pk,'fields':coursedict})
-        print(coursedict)
-        pk +=1
-
-    with open(get_path(project_name,json_new_class_list),'w') as jsonfile:
-        json.dump(list,jsonfile)
 
 
 def csv_to_easyui_json(project_name, json_new_class_list):
@@ -276,5 +239,5 @@ def csv_to_easyui_json(project_name, json_new_class_list):
     with open(get_path(project_name, json_new_class_list), 'w') as jsonfile:
         json.dump(list, jsonfile)
 # read_final_class_list(PROJECT_NAME,CSV_NEW_CLASS_LIST)
-# csv_to_json(PROJECT_NAME,JSON_NEW_CLASS_LIST)
+
 csv_to_easyui_json(PROJECT_NAME,JSON_EASYUI_NEW_CLASS_LIST)
