@@ -5,9 +5,14 @@
         <title>SMC class list + grade distribution</title>
         <link rel="stylesheet" type="text/css" href="./static/themes/default/easyui.css">
         <link rel="stylesheet" type="text/css" href="./static/themes/icon.css">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
         <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="./static/jquery.easyui.min.js"></script>
         <style>
+            
             #header{
                 background-color: #3c8b3c;
                 color: white;
@@ -25,6 +30,7 @@
             }
             body{
                 margin:0;
+                font-family: "Open Sans", Arial;
             }
         </style>
 <base target="_blank">
@@ -32,10 +38,23 @@
     </head>
     <body>
     <div id="header">
-        <h1>SMC Class List + Grade Distribution</h1>
+        <h1>SMC Class List + Grade Distribution <a href="https://github.com/JimmyRowland/smc_course_list"><i class="fa fa-github" aria-hidden="true"></i></a> </h1>
     </div>
 
-        <div style="margin:20px 0;"></div>
+       <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#collapse1">Tips (click me to see)</a>
+        </h4>
+      </div>
+        <div id="collapse1" class="panel-collapse collapse">
+        <ul class="list-group">
+          <li class="list-group-item list-group-item list-group-item-success">Filter:(ex:Course) math--return all classes contain string math</li>
+          <li class="list-group-item">math 8 (a space at the end)--return math 8</li>
+          <li class="list-group-item list-group-item list-group-item-info">math 8 ,physcs--return math 8 and all the physcs class (','is separator)</li>
+          <li class="list-group-item">You can also find the easiest classes in IGETC area 5 by inputing 5 in igetc and clicking A% to sort the array</li>
+          <li class="list-group-item list-group-item list-group-item-success">Click professors' names to visit their ratemyprofessor pages</li>
+          </ul></div></div>
 
 
             <table id='dg' class="easyui-datagrid" title="SMC class list" style="width:100%"
