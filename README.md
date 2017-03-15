@@ -11,8 +11,10 @@ update class list after released by smc (from <a href="https://isiscc.smc.edu/pl
 An api that can connect with front end data grid ui (example:<a href="https://www.jeasyui.com/">jQuery easyUI</a> I really don't want to use PHP)
 Connect with or accomplish functionalities of<a href="http://www.smcteacherstats.com/">smc teacherstats</a> <a href="https://github.com/jtrwallace/SMC_CPC_Web">another grade distribution</a>
 A schedule planer which can be imported to google calender
+more filters built on jQuery easyUI
+a spider for assist.org
 
 Clone of canvas
-an chorme extension that can extract data from canvas and post to webserver
+an chorme extension that can extract data from canvas and post to webserver(seems not possible)
 get redirected url
 </pre>
