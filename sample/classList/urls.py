@@ -18,6 +18,7 @@ from . import views
 app_name = 'classList'
 urlpatterns = [
     url(r'^springwinter2017$', views.SpringWinter2017, name='SpringWinter2017'),
+    # url(r'^test', views.test, name='test'),
 
 
 ]

@@ -65,19 +65,19 @@ def get_course_list(urllist,project_name,csv_class_list):
 
                             regex = re.compile(r"[1-9]+[A-Z]?")
                             matches = re.findall(regex, string)
-                            print(matches,string)
-                            for match in matches:
-                                if match[0] not in matches:
-                                    matches.append(match[0])
-
+                            # print(matches,string)
+                            # for match in matches:
+                            #     if match[0] not in matches:
+                            #         matches.append(match[0])
+                            #
                             if 'Foreign Language' in string:
-                                matches.append('Foreign_Language')
-                            for match in matches:
-                                if match not in igetcDic:
-                                    igetcDic[match] = [course]
-                                else:
-                                    if course not in igetcDic[match]:
-                                        igetcDic[match].append(course)
+                                matches.append('Foreign Language')
+                            # for match in matches:
+                            #     if match not in igetcDic:
+                            #         igetcDic[match] = [course]
+                            #     else:
+                            #         if course not in igetcDic[match]:
+                            #             igetcDic[match].append(course)
                             igect = ','.join(matches)
     # print(igetcDic)
     with open(get_path(project_name,csv_class_list),'w',newline='') as csvfile:

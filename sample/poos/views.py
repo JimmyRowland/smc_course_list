@@ -4,7 +4,7 @@ from .models import Question, Choice
 from django.shortcuts import render
 from django.shortcuts import get_list_or_404
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+# from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 # Create your views here.
@@ -35,7 +35,7 @@ class IndexView(generic.ListView):
     context_object_name = 'course_list'
 
     def get_queryset(self):
-        return CourseList.objects.all()
+        return Question.objects.all()
 
 class DetailView(generic.DetailView):
     model = Question
@@ -60,17 +60,17 @@ class ResultsView(generic.DetailView):
 
 
 
-def vote(request, question_id):
-    question = get_list_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question[0].choice_set.get(pk=request.POST['choice'])
-        print(question[0],question[0].choice_set.get(pk=request.POST['choice']))
-    except(KeyError, Choice.DoesNotExist):
-        return render(request, "poos/detail.html", {"question": question, 'error_message': 'you didn\'t select a choice'})
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        return HttpResponseRedirect(reverse('poos:results', args=(question_id,)))
+# def vote(request, question_id):
+#     question = get_list_or_404(Question, pk=question_id)
+#     try:
+#         selected_choice = question[0].choice_set.get(pk=request.POST['choice'])
+#         print(question[0],question[0].choice_set.get(pk=request.POST['choice']))
+#     except(KeyError, Choice.DoesNotExist):
+#         return render(request, "poos/detail.html", {"question": question, 'error_message': 'you didn\'t select a choice'})
+#     else:
+#         selected_choice.votes += 1
+#         selected_choice.save()
+#         return HttpResponseRedirect(reverse('poos:results', args=(question_id,)))
 
 def sample(request):
     return render(request, 'poos/sample.html,')
