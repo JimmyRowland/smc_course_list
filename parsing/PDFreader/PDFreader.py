@@ -44,14 +44,43 @@ class PDFqueryGrade(BaseTestCase):
 
             # return this.get('text', 0) < 3
 
-
+        pageWidth = self.pdf.pq('LTPage').attr("x1")
+        # print(width)
         department = self.pdf.pq('LTTextLineHorizontal:contains("Department")')
+        departmentCenter = self.getCenter(department)
+        gridHeight=department.attr('height')
+        # print("%s,%s,%s,%s" % (float(width)-100,0, width, departmentCenter[1] + 0.1))
+        firstRow=self.pdf.pq('LTTextLineHorizontal:overlaps_bbox("0,%s,%s,%s")' % (departmentCenter[1],pageWidth,departmentCenter[1]+0.1))
+        secondRow=self.pdf.pq('LTTextLineHorizontal:overlaps_bbox("0,%s,%s,%s")' % (departmentCenter[1]-21.6,pageWidth,departmentCenter[1]-21.5))
+        x0FirstRow=[float(i.attr('x0')) for i in firstRow.items()]
+        firstRowText=[firstRow.eq(i) for i in range(len(firstRow)) ]
+        firstRowText.sort(key= lambda x: float(x.attr('x0')))
+        # print(firstRow.items()[0])
+        print(firstRowText[0].text())
+        x0FirstRow.sort()
+
+        print(dir(firstRow))
+        # print(inspect.getsource(firstRow[0].text))
+        print(inspect.getsource(firstRow.text))
+        print(inspect.getmembers(firstRow))
+        print('children',firstRow.children())
+        print(firstRow.eq(0))
+        print(firstRow.find('P'))
+        print(firstRow.eq(4).text())
+
+        print(x0FirstRow)
+        # print(firstRow[0].get_text())
+        print(firstRow.text())
+        print(secondRow.text())
+        print(secondRow.eq(11).text())
+
+
         subject = self.pdf.pq('LTTextLineHorizontal:contains("Subject")')
         course = self.pdf.pq('LTTextLineHorizontal:contains("Course")')
         section = self.pdf.pq('LTTextLineHorizontal:contains("Section")')
         instructor = self.pdf.pq('LTTextLineHorizontal:contains("Instructor")')
 
-        departmentCenter = self.getCenter(department)
+
         instructorCenter = self.getCenter(instructor)
 
         gradeA = self.pdf.pq('LTTextLineHorizontal:contains("A")').filter(gradeLetterPositionFilter)
@@ -60,7 +89,9 @@ class PDFqueryGrade(BaseTestCase):
         gradeD = self.pdf.pq('LTTextLineHorizontal:contains("D")').filter(gradeLetterPositionFilter)
         gradeF = self.pdf.pq('LTTextLineHorizontal:contains("F")').filter(gradeLetterPositionFilter)
         gradeP = self.pdf.pq('LTTextLineHorizontal:contains("P")').filter(gradeLetterPositionFilter)
-        
+        print(department)
+        print(gradeP)
+
         # text=[]
         # def add_text(tag, no_tail=False):
         #     if tag.text and not isinstance(tag, lxml.etree._Comment):
