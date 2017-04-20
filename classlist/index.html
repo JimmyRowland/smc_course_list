@@ -73,6 +73,7 @@
                      <th data-options="field:'grade_gt_B_rate',width:50,align:'center',sortable:'true',order:'desc'">gtB%</th>
                      <th data-options="field:'grade_gt_C_rate',width:50,align:'center',sortable:'true',order:'desc'">gtC%</th>
                      <th data-options="field:'grade_gt_P_rate',width:50,align:'center',sortable:'true',order:'desc'">gtP%</th>
+                    <th data-options="field:'grade_gt_W_rate',width:50,align:'center',sortable:'true',order:'desc'">gtW%</th>
                      <th data-options="field:'rating',width:50,align:'center',sortable:'true',order:'desc'">rating</th>
                      <th data-options="field:'votes_num',width:50,align:'center',sortable:'true',order:'desc'">votes</th>
                      <th data-options="field:'igetc',width:130,align:'center'">igetc</th>
@@ -110,6 +111,12 @@
             },
                     {
                 field:'grade_gt_P_rate',
+                type:'numberbox',
+                options:{precision:1},
+                op:['equal','notequal','less','greater']
+            },
+                    {
+                field:'grade_gt_W_rate',
                 type:'numberbox',
                 options:{precision:1},
                 op:['equal','notequal','less','greater']

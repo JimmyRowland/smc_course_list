@@ -92,7 +92,7 @@ def read_class_list(project_name, csv_class_list):
         return list(readCSV)
         # print(readCSV)
 
-get_course_list(URL,PROJECT_NAME,CSV_CLASS_LIST)
+# get_course_list(URL,PROJECT_NAME,CSV_CLASS_LIST)
 # read_class_list(PROJECT_NAME, CSV_CLASS_LIST)
 
 
