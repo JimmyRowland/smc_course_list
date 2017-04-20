@@ -45,8 +45,14 @@ def merge_professor_grade_classlist(project_name, json_ratemyprofessor, grade_al
     dic_grade = read_grade(project_name, grade_all_json)
     list_class_list = read_class_list(project_name, csv_class_list)
 
-
-    confusing_name_dict={}
+    def read_confusing_name_dict(project_name, json_professor_with_confusing_names):
+        with open(get_path(project_name, json_professor_with_confusing_names)) as jsonfile:
+            dic = json.load(jsonfile)
+            # print(dic)
+            return dic
+    # confusing_name_dict=read_confusing_name_dict(project_name, json_professor_with_confusing_names)
+    confusing_name_dict={"Leveque V F":"Le Veque V"}
+    print(confusing_name_dict)
     new_list=[]
     # print(dic_grade)
     with open(get_path(project_name,json_professor_with_confusing_names)) as jsondata:
@@ -54,7 +60,11 @@ def merge_professor_grade_classlist(project_name, json_ratemyprofessor, grade_al
 
     for course in list_class_list:
         course_info = []
+        # print(course)
         name = course[6].split()
+        # print(name)
+        if len(name)==0:
+            name.append("stuff")
         name_key = name[0]+' '
         if len(name) == 1:
             name_keys = [name[0]]
@@ -70,11 +80,16 @@ def merge_professor_grade_classlist(project_name, json_ratemyprofessor, grade_al
 
         if grade_key in dic_grade:
             course_info = (course[:-1] + dic_grade[grade_key])
+            # print('test1',len(dic_grade[grade_key]))
         else:
-            course_info = (course[:-1] + [0,0,0,0,0,0,0,0,0])
+            course_info = (course[:-1] + [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+            print('test2', len([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
 
         if course[6] in confusing_name_dict:
+
             name_key = confusing_name_dict[course[6]]
+
+            # print(course[6],name_key)
         else:
             for key in name_keys:
                 if key in dic_professor:
@@ -121,12 +136,16 @@ def merge_professor_grade_classlist(project_name, json_ratemyprofessor, grade_al
                     print('departments do not match, name:',course[6],' ratemypro ', dic_professor[name_key], course)
                     course_info += [0, 0, 0, 0, 0, 0, 0]
         else:
-            course_info+=[0,0,0,0,0,0,0]
+            course_info+=[0, 0, 0, 0, 0, 0, 0]
             print('name not in ratemyprofessor ',course[6],[name_key] ,course)
         ## Add Semester
         course_info.append(course[-1])
         # print(len(course_info))
         new_list.append(course_info)
+    # for x in new_list:
+    #     if(len(x)!=30):
+    #         print(x)
+        # print(len(x))
 
     with open(get_path(project_name, csv_new_class_list),'w', newline='') as csvfile:
         csvwiter= csv.writer(csvfile,delimiter='\t')
@@ -203,9 +222,11 @@ def csv_to_easyui_json(project_name, json_new_class_list):
     finalCourseList = read_final_class_list(PROJECT_NAME, CSV_NEW_CLASS_LIST)
     # print(finalCourseList)
     for course in finalCourseList:
+        numofNewData=6
+        halfnumofNewData=3
         coursedict = {}
         # coursedictlist=[{},{},{}]
-        coursedict['Semester'] = course[23]
+        coursedict['Semester'] = course[23+numofNewData]
         coursedict['Department'] = course[0]
         coursedict['Course'] = course[1]+' '
 
@@ -223,12 +244,13 @@ def csv_to_easyui_json(project_name, json_new_class_list):
         # coursedict['grade_C_sum'] = int(course[9])
         # coursedict['grade_P_sum'] = int(course[10])
         coursedict['numberOfStudents'] = int(course[11])
-        coursedict['grade_A_rate'] = int(course[12])
-        coursedict['grade_gt_B_rate'] = int(course[13])
-        coursedict['grade_gt_C_rate'] = int(course[14])
-        coursedict['grade_gt_P_rate'] = int(course[15])
+        coursedict['grade_A_rate'] = int(course[12+halfnumofNewData])
+        coursedict['grade_gt_B_rate'] = int(course[13+halfnumofNewData])
+        coursedict['grade_gt_C_rate'] = int(course[14+halfnumofNewData])
+        coursedict['grade_gt_P_rate'] = int(course[15+halfnumofNewData])
+        coursedict['grade_gt_W_rate'] = int(course[18 + halfnumofNewData])
         try:
-            coursedict['rating'] = float(course[16])
+            coursedict['rating'] = float(course[16+numofNewData])
         except:
             coursedict['rating'] = 0
         # coursedict['url_text'] = course[17]
@@ -239,7 +261,7 @@ def csv_to_easyui_json(project_name, json_new_class_list):
         # coursedict['fname_text'] = course[20]
         # coursedict['tid_id'] = int(course[21])
         # url = course[17]
-        coursedict['votes_num'] = int(course[22])
+        coursedict['votes_num'] = int(course[22+numofNewData])
         temp = '' + course[2]
         temp = temp.split(',')
         # if course[1]=="HIST 15":
@@ -287,13 +309,15 @@ def csv_to_easyui_json(project_name, json_new_class_list):
                 #             coursedictlist[i]['igetcFilter'] = temp[i][0]
                 #             coursedictlist[i]['igetc'] = course[2]
 
-        if len(course[17]) >5:
-            coursedict['Instructor'] = "<a href='" + course[17] + "'>" + course[6] + "</a>"
+        if len(course[17+numofNewData]) >5:
+            coursedict['Instructor'] = "<a href='" + course[17+numofNewData] + "'>" + course[6] + "</a>"
         else:
             coursedict['Instructor'] = course[6]
 
         # coursedict['Instructor'] = "<a href='" + course[17] + "'>" + course[6] + "</a>" + ' ' + course[3]+''+coursedict['Time'] + ' ' + coursedict['Weekday'] + ' ' + coursedict['Location']
         list.append(coursedict)
+        print(coursedict)
+        print(course)
         # for x in coursedictlist:
         #     if len(x)!=0:
         #         list.append(x)
@@ -301,9 +325,9 @@ def csv_to_easyui_json(project_name, json_new_class_list):
     with open(get_path(project_name, json_new_class_list), 'w') as jsonfile:
         json.dump(list, jsonfile)
 
-merge_professor_grade_classlist(PROJECT_NAME, Json_RATEMYPROFESSOR, GRADE_ALL_JSON, CSV_CLASS_LIST, CSV_NEW_CLASS_LIST, JSON_PROFESSOR_WITH_CONFUSING_NAMES)
+# merge_professor_grade_classlist(PROJECT_NAME, Json_RATEMYPROFESSOR, GRADE_ALL_JSON, CSV_CLASS_LIST, CSV_NEW_CLASS_LIST, JSON_PROFESSOR_WITH_CONFUSING_NAMES)
 
 
 # read_final_class_list(PROJECT_NAME,CSV_NEW_CLASS_LIST)
 # csv_to_json(PROJECT_NAME,JSON_NEW_CLASS_LIST)
-# csv_to_easyui_json(PROJECT_NAME,JSON_EASYUI_NEW_CLASS_LIST)
+csv_to_easyui_json(PROJECT_NAME,JSON_EASYUI_NEW_CLASS_LIST)

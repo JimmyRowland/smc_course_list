@@ -30,6 +30,10 @@ def get_rating_from_ratemyprofessor(baseURL, schoolID, path):
         print(url)
         for professors in data['professors']:
             result.append([professors['tLname']+' '+professors['tFname'][0], professors['overall_rating'], "http://www.ratemyprofessors.com/ShowRatings.jsp?tid="+str(professors["tid"]),professors['tDept'],professors['tLname'],professors['tFname'],professors["tid"],professors["tNumRatings"]])
+            result.append([professors['tLname'] + ' ' + professors['tFname'][0], professors['overall_rating'],
+                           "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + str(professors["tid"]),
+                           professors['tDept'], professors['tLname'], professors['tFname'], professors["tid"],
+                           professors["tNumRatings"]])
             # print(result)
 
         # print(data)
@@ -62,6 +66,6 @@ def read_Professor(project_name,  json_ratemyprofessor):
         # print(dic)
         return dic
 
-get_rating_from_ratemyprofessor(RATEMYPROFESSOR_URL, SCHOOL_ID, get_path(PROJECT_NAME,CSV_RATEMYPROFESSOR))
-jsonProfessor(PROJECT_NAME,CSV_RATEMYPROFESSOR,Json_RATEMYPROFESSOR)
+# get_rating_from_ratemyprofessor(RATEMYPROFESSOR_URL, SCHOOL_ID, get_path(PROJECT_NAME,CSV_RATEMYPROFESSOR))
+# jsonProfessor(PROJECT_NAME,CSV_RATEMYPROFESSOR,Json_RATEMYPROFESSOR)
 # read_Professor(PROJECT_NAME,Json_RATEMYPROFESSOR)

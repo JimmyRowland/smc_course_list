@@ -9,6 +9,7 @@ import pickle
 from general import *
 import pdfquery
 from pdfquery.cache import FileCache
+from math import ceil
 
 
 def getColumnCoordinatesSemesterYear(path):
@@ -405,12 +406,22 @@ def abcdpwtotal():
         key=df['Course'].iloc[i]+','+df['Instructor'].iloc[i]
         if key not in dictionary:
             dictionary[key] = [df['A'].iloc[i], df['B'].iloc[i], df['C'].iloc[i]
-                , df['D'].iloc[i], df['P'].iloc[i], df['F'].iloc[i], df['W'].iloc[i], df['Total'].iloc[i]]
+                , df['P'].iloc[i], df['D'].iloc[i], df['F'].iloc[i], df['W'].iloc[i], df['Total'].iloc[i]]
         else:
             temp=[df['A'].iloc[i], df['B'].iloc[i], df['C'].iloc[i]
-                , df['D'].iloc[i], df['P'].iloc[i], df['F'].iloc[i], df['W'].iloc[i], df['Total'].iloc[i]]
+                , df['P'].iloc[i], df['D'].iloc[i], df['F'].iloc[i], df['W'].iloc[i], df['Total'].iloc[i]]
             for index in range(len(dictionary[key])):
                 dictionary[key][index] += temp[index]
+    for key in dictionary:
+        sum = 0
+        for index in range(5):
+            sum += dictionary[key][index]
+            # print(dictionary[key][index],sum, dictionary[key][-1])
+            dictionary[key].append((ceil((sum / dictionary[key][7]) * 100)))
+        for index in range(5,7):
+            # print(dictionary[key][index],dictionary[key][-1],dictionary[key])
+            dictionary[key].append((ceil((dictionary[key][index] / dictionary[key][7]) * 100)))
+
     print(dictionary)
 
 
