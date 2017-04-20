@@ -5,7 +5,7 @@ import re
 import csv
 
 
-URL = ["http://isismc02.smc.edu/isisdoc/web_cat_sched_20170.html","http://isismc02.smc.edu/isisdoc/web_cat_sched_20171.html"]
+URL = ["https://isiscc.smc.edu/isisdoc/web_cat_sched_20172.html","https://isiscc.smc.edu/isisdoc/web_cat_sched_20173.html"]
 
 PROJECT_NAME = "ClassList"
 PATH = "./"+PROJECT_NAME+"/classTable.txt"
@@ -92,7 +92,7 @@ def read_class_list(project_name, csv_class_list):
         return list(readCSV)
         # print(readCSV)
 
-# get_course_list(URL,PROJECT_NAME,CSV_CLASS_LIST)
+get_course_list(URL,PROJECT_NAME,CSV_CLASS_LIST)
 # read_class_list(PROJECT_NAME, CSV_CLASS_LIST)
 
 

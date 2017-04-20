@@ -270,18 +270,149 @@ def getTableDataToPickle(pathList):
         # print(temp)
 
 def readFromPickle(pathList):
+    result=[]
     for path in pathList:
 
-        temp= pandas.read_pickle('pickle'+path+'.pickle')
-        print(path)
-        print(temp)
+        df= pandas.read_pickle('pickle'+path+'.pickle')
+        # print(df)
+        # print([column for column in df])
+        df.columns=[column if column in ['Year', 'Semester'] else df[column].iloc[0] for column in df]
+        # print(df[pandas.isnull(df['Section'])])
+        df=df[pandas.notnull(df['Section'])]
+        # print(df[df["Section"].str.isalpha()])
+        df=df[df["Section"].str.isdigit()]
+        # print(df[df["Section"].str.isdigit()])
+        def fillNaNDepartmentSubjectCourse(columnName):
+            DepartmentSubjectCourse=[]
+            def fill(x):
+                if type(x)==str:
+                    # match = re.match(r"([a-zA-Z]+)(\d+[a-zA-Z]?)$",x,re.I)
+                    # print(x)
+                    x=' '.join(x.split())
+                    x=' '.join(re.split(r"([a-zA-Z]+)(\d+[a-zA-Z]?$)",x)).strip()
+                    # print(' '.join(re.split(r"([a-zA-Z]+)(\d+[a-zA-Z]?$)",x)).strip(),x)
+                    # print(x)
+                    DepartmentSubjectCourse.append(x)
+                    return x
+                else:
+                    return DepartmentSubjectCourse[-1]
+            df[columnName]=df[columnName].apply(fill)
+            # print(DepartmentSubjectCourse)
+            # print(df[columnName].apply(fill))
+
+        def fixColumnHeader(df):
+            flawedHeader=['Department', 'Subject', 'Course', 'Section', 'Instructor', 'A', 'B',
+       'C', 'D DR', 'F', 'P', 'W', 'Grand Total', 'Year',
+       'Semester']
+            correctHeader=['Department', 'Subject', 'Course', 'Section', 'Instructor', 'A', 'B',
+       'C', 'D', 'F', 'P', 'W', 'Total', 'Year',
+       'Semester']
+            
+
+            def fixDDRcolumn(str):
+                if type(str)==int:
+                    return str
+                list=str.split()
+                return sum(int(x) for x in list)
+            def fillnaWith0(str,df):
+
+                # # print(column, str,'fillnaWith0')
+                df[str] = df[str].fillna(0)
+                # print(df)
+                # # print(df[df[str].str.isalpha()])
+                df[str] = df[str].apply(int)
+                return df
+
+            def fixHeaderSwitch(correctHeader,column,df):
+                # print(df)
+                # print(correctHeader,column)
+
+                if column == 'D DR':
+                    df[column] = df[column].fillna(0)
+                    df[column] = df[column].apply(fixDDRcolumn)
+
+                elif len(column) < 3:
+
+
+                    df[column] = df[column].fillna(0)
+                    df[column] = df[column].apply(int)
+                    # df[column] = pandas.to_numeric(df[column])
+                    # if (column == 'W'):
+                    #     print(df[column])
+                elif "Total" in column:
+                    df[column] = df[column].apply(int)
+                df = df.rename(columns={column: correctHeader})
+
+                return df
+            for column in df:
+                if column in correctHeader:
+                    # print('if')
+                    df = fixHeaderSwitch(column, column, df)
+                    # print(df)
+                else:
+                    # print('else')
+                    for i in range(len(flawedHeader)):
+                        if column in flawedHeader[i]:
+                            df=fixHeaderSwitch(correctHeader[i],column,df)
+                            break
+                        elif(i==len(flawedHeader)-1):
+                            # print(column)
+                            # print(df.columns,column)
+                            df.pop(column)
+                            break
+                            # df = df.drop(column)
+            if "W" not in [column for column in df]:
+                # df['test']=df[['A', 'B', 'C', 'D', 'F', 'P']].sum(axis=1)
+                # print(df[["Total",'A', 'B', 'C', 'D', 'F', 'P']].diff(axis=1))
+                # df=df.assign(W=lambda df:df["Total"]-df["A"]-df["B"]-df["C"]-df["D"]-df["F"]-df["P"])
+                df['W']=df["Total"]-df["A"]-df["B"]-df["C"]-df["D"]-df["F"]-df["P"]
 
 
 
-    # tabula.convert_into("pdfFiles/selection.pdf", "output.json", output_format="json")
-    # for i in df:
-    #     print(i)
-    # print(df)
+
+                # print(column,'column')
+                # df=df.drop(column)
+
+            return df
+
+
+
+
+        fillNaNDepartmentSubjectCourse("Department")
+        fillNaNDepartmentSubjectCourse("Subject")
+        fillNaNDepartmentSubjectCourse("Course")
+        # print(df)
+        df=fixColumnHeader(df)
+        # print(df.isnull().any())
+        # print(df.head(),df.columns)
+        # print(df)
+        result.append(df)
+        df.to_csv('test/'+path+'.csv')
+    result=pandas.concat(result)
+    # print(result[result.isnull().any(axis=1)])
+
+    # print(result.isnull().any())
+    # print(result)
+    result.to_pickle('pickleResult.pickle')
+
+
+def abcdpwtotal():
+    df=pandas.read_pickle('pickleResult.pickle')
+    # print(len(df))
+    print(df.columns)
+    dictionary={}
+    for i in range(len(df)):
+        key=df['Course'].iloc[i]+','+df['Instructor'].iloc[i]
+        if key not in dictionary:
+            dictionary[key] = [df['A'].iloc[i], df['B'].iloc[i], df['C'].iloc[i]
+                , df['D'].iloc[i], df['P'].iloc[i], df['F'].iloc[i], df['W'].iloc[i], df['Total'].iloc[i]]
+        else:
+            temp=[df['A'].iloc[i], df['B'].iloc[i], df['C'].iloc[i]
+                , df['D'].iloc[i], df['P'].iloc[i], df['F'].iloc[i], df['W'].iloc[i], df['Total'].iloc[i]]
+            for index in range(len(dictionary[key])):
+                dictionary[key][index] += temp[index]
+    print(dictionary)
+
 
 # def getPicklePath():
 #     return glob.glob('picklepdfFiles/*.pickle')
@@ -296,4 +427,5 @@ def getClassList():
     print(classList)
 
 # getTableDataToPickle(getPDFFilePath()[1:])
-# readFromPickle(getPDFFilePath())
+# readFromPickle(getPDFFilePath()[:])
+abcdpwtotal()
