@@ -424,7 +424,9 @@ def abcdpwtotal():
 
     print(dictionary)
 
-
+def pickleToCVS():
+    df = pandas.read_pickle('pickleResult.pickle')
+    df.to_csv('grade.cvs')
 # def getPicklePath():
 #     return glob.glob('picklepdfFiles/*.pickle')
 
@@ -439,4 +441,5 @@ def getClassList():
 
 # getTableDataToPickle(getPDFFilePath()[1:])
 # readFromPickle(getPDFFilePath()[:])
-abcdpwtotal()
+# abcdpwtotal()
+pickleToCVS()

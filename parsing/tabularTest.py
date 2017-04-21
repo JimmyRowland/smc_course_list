@@ -456,6 +456,9 @@ def abcdpwtotal(fileList, projectName, outputFileName):
 
 # def getPicklePath():
 #     return glob.glob('picklepdfFiles/*.pickle')
+def pickleToCVS():
+    df = pandas.read_pickle('pickleResult.pickle')
+    df.to_csv('grade2012-2016spring.cvs')
 
 def getPDFFilePath():
     return glob.glob('pdfFiles/*.pdf')
@@ -468,4 +471,5 @@ def getClassList():
 
 # getTableDataToPickle(getPDFFilePath()[1:])
 # readFromPickle(getPDFFilePath()[:])
-abcdpwtotal(CSV_GRADE_TABLES,PROJECT_NAME,GRADE_ALL_JSON)
+# abcdpwtotal(CSV_GRADE_TABLES,PROJECT_NAME,GRADE_ALL_JSON)
+pickleToCVS()
