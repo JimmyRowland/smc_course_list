@@ -5,7 +5,7 @@ import re
 import csv
 
 
-URL = ["https://isiscc.smc.edu/isisdoc/web_cat_sched_20172.html","https://isiscc.smc.edu/isisdoc/web_cat_sched_20173.html"]
+URL = ["https://isiscc.smc.edu/isisdoc/web_cat_sched_20181.html","https://isiscc.smc.edu/isisdoc/web_cat_sched_20180.html"]
 
 PROJECT_NAME = "ClassList"
 PATH = "./"+PROJECT_NAME+"/classTable.txt"
@@ -37,12 +37,17 @@ def get_course_list(urllist,project_name,csv_class_list):
                     if x.name =='h1':
                         regex = re.compile(r"SMC (.*) Schedule of Classes")
                         matches = re.findall(regex, x.text)
-                        semester = matches[0]
-                        print(semester)
-                    if x.name == 'h2':
-                        apartment = x.text
-                        course = ''
-                        igect = ''
+                        if(len(matches)):
+                            semester = matches[0]
+                            print(semester)
+                        else:
+                            apartment = x.text
+                            course = ''
+                            igect = ''
+                    # if x.name == 'h2':
+                    #     apartment = x.text
+                    #     course = ''
+                    #     igect = ''
                     elif x.name == 'a':
                         course = ' '.join(x.get('name').split())
                         igect = ''
@@ -88,9 +93,9 @@ def get_course_list(urllist,project_name,csv_class_list):
 def read_class_list(project_name, csv_class_list):
     with open(get_path(project_name,csv_class_list),newline='') as csvfile:
         readCSV = csv.reader(csvfile, delimiter='\t')
-
-        return list(readCSV)
         # print(readCSV)
+        return list(readCSV)
+
 
 # get_course_list(URL,PROJECT_NAME,CSV_CLASS_LIST)
 # read_class_list(PROJECT_NAME, CSV_CLASS_LIST)
