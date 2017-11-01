@@ -2,9 +2,11 @@ smc_course_list
 <br>
 <!-- <a href="https://codepen.io/please_check_your_network_connection/full/bBgqNK/">smc_course_list on codepen</a> -->
 <br>
-<a href="https://jimmyrowland.github.io/smc_course_list/classlist/">smc_course_list on github page 2017 summer & fall</a>
+<a href="https://jimmyrowland.github.io/smc_course_list/classlist/">smc_course_list on github page 2018 winter & spring</a>
 
 <a href="https://jimmyrowland.github.io/smc_course_list/classlist/2017spring/">History: 2017 spring/winter</a>
+<a href="https://jimmyrowland.github.io/smc_course_list/classlist/">2017 summer & fall</a>
+
 <pre>
 To do list:
 import grade from PDF grade distribution files (extract data from pdf files)
