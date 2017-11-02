@@ -5,6 +5,7 @@ smc_course_list
 <a href="https://jimmyrowland.github.io/smc_course_list/classlist/">smc_course_list on github page 2018 winter & spring</a>
 
 <a href="https://jimmyrowland.github.io/smc_course_list/classlist/2017spring/">History: 2017 spring/winter</a>
+<br>
 <a href="https://jimmyrowland.github.io/smc_course_list/classlist/">2017 summer & fall</a>
 
 <pre>
