@@ -1,4 +1,4 @@
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 import json
 from math import ceil
 import csv
@@ -17,14 +17,21 @@ def get_rating_from_ratemyprofessor(baseURL, schoolID, path):
     maxpages = 0
     urlpage= '&page='
     url = baseURL+schoolID+urlpage+str(pages)
-    response = urlopen(url).read().decode("utf-8")
+    req = Request(
+        url,
+        headers={'User-Agent': 'Mozilla/5.0'})
+
+    response = urlopen(req).read().decode("utf-8")
     data = json.loads(response)
     maxpages = ceil(int(data['searchResultsTotal'])/20)
     for num in range(maxpages):
         # if num == 2:
         #     break
         url = baseURL + schoolID + urlpage + str(pages)
-        response = urlopen(url).read().decode("utf-8")
+        req = Request(
+            url,
+            headers={'User-Agent': 'Mozilla/5.0'})
+        response = urlopen(req).read().decode("utf-8")
         data = json.loads(response)
         pages += 1
         print(url)

@@ -269,19 +269,48 @@ def getTableDataToPickle(pathList):
         # temp= pandas.read_pickle('pickle'+path+'.pickle')
         # print(path)
         # print(temp)
+def tabulaLattice(pathList):
+    create_project_dir("picklepdfFiles")
+
+
+    for path in pathList:
+        regex = re.compile(r"\d{4}")
+        year = re.search(regex, path).group()
+        if "Spring" in path:
+            semester = "Spring"
+        elif "Fall" in path:
+            semester = "Fall"
+        else:
+            semester = "error"
+
+
+        df = tabula.read_pdf(path,pages='all',silent=True,guess=True,lattice=True)
+        df["Year"]=year
+        df["Semester"]=semester
+        print(df)
+        df.to_csv('test/'+path+'.csv')
+        df.to_pickle('pickle'+path+'.pickle')
 
 def readFromPickle(pathList):
     result=[]
     for path in pathList:
 
         df= pandas.read_pickle('pickle'+path+'.pickle')
-        # print(df)
+        print(df)
+        print(df.columns.values)
         # print([column for column in df])
-        df.columns=[column if column in ['Year', 'Semester'] else df[column].iloc[0] for column in df]
+        if "Department" in df.columns.values:
+            df.columns=df.columns.values
+        else:
+            df.columns=[column if column in ['Year', 'Semester'] else df[column].iloc[0] for column in df]
+        print([column for column in df])
         # print(df[pandas.isnull(df['Section'])])
         df=df[pandas.notnull(df['Section'])]
         # print(df[df["Section"].str.isalpha()])
-        df=df[df["Section"].str.isdigit()]
+        try:
+            df=df[df["Section"].str.isdigit()]
+        except Exception as e:
+            print(e)
         # print(df[df["Section"].str.isdigit()])
         def fillNaNDepartmentSubjectCourse(columnName):
             DepartmentSubjectCourse=[]
@@ -341,7 +370,16 @@ def readFromPickle(pathList):
                     # if (column == 'W'):
                     #     print(df[column])
                 elif "Total" in column:
-                    df[column] = df[column].apply(int)
+                    try:
+                        df=df.fillna[0]
+                        df[column]=df[column].fillna[0]
+
+                    except Exception as e:
+                        print(e)
+                    try:
+                        df[column] = df[column].apply(int)
+                    except Exception as e:
+                        print("df[column] = df[column].apply(int)",e)
                 df = df.rename(columns={column: correctHeader})
 
                 return df
@@ -364,9 +402,12 @@ def readFromPickle(pathList):
                             # df = df.drop(column)
             if "W" not in [column for column in df]:
                 # df['test']=df[['A', 'B', 'C', 'D', 'F', 'P']].sum(axis=1)
-                # print(df[["Total",'A', 'B', 'C', 'D', 'F', 'P']].diff(axis=1))
+                print(df[["Total",'A', 'B', 'C', 'D', 'F', 'P']].diff(axis=1))
                 # df=df.assign(W=lambda df:df["Total"]-df["A"]-df["B"]-df["C"]-df["D"]-df["F"]-df["P"])
-                df['W']=df["Total"]-df["A"]-df["B"]-df["C"]-df["D"]-df["F"]-df["P"]
+                try:
+                    df['W']=df["Total"]-df["A"]-df["B"]-df["C"]-df["D"]-df["F"]-df["P"]
+                except Exception as e:
+                    print(e)
 
 
 
@@ -393,13 +434,13 @@ def readFromPickle(pathList):
     # print(result[result.isnull().any(axis=1)])
 
     # print(result.isnull().any())
-    # print(result)
+    print(result)
     result.to_pickle('pickleResult.pickle')
 
 
 def abcdpwtotal():
     df=pandas.read_pickle('pickleResult.pickle')
-    # print(len(df))
+    print(len(df),df)
     print(df.columns)
     dictionary={}
     for i in range(len(df)):
@@ -425,8 +466,23 @@ def abcdpwtotal():
     print(dictionary)
 
 def pickleToCVS():
+
     df = pandas.read_pickle('pickleResult.pickle')
-    df.to_csv('grade.cvs')
+    print(df)
+    for column in df:
+        print(df[column].dtype)
+        try:
+            df = df.fillna[0]
+
+        except Exception as e:
+            print(e)
+        try:
+            df[column] = df[column].apply(str)
+        except Exception as e:
+            print("df[column] = df[column].apply(int)", e)
+        for row in column:
+            print(type(row),type('asdf'))
+    df.to_csv('grade.csv')
 # def getPicklePath():
 #     return glob.glob('picklepdfFiles/*.pickle')
 
@@ -442,4 +498,18 @@ def getClassList():
 # getTableDataToPickle(getPDFFilePath()[1:])
 # readFromPickle(getPDFFilePath()[:])
 # abcdpwtotal()
-pickleToCVS()
+# pickleToCVS()
+
+
+
+
+
+
+
+
+# getTableDataToPickle(['pdfFiles/Fall 2016 - Grade Distribution.pdf'])
+# tabulaLattice(['pdfFiles/Santa Monica College -Grade Distribution Fall 2017.pdf','pdfFiles/Santa Monica College -Grade Distribution Spring 2017.pdf'])
+# readFromPickle(['pdfFiles/Spring 2016 Grade Distribution- Report.pdf'])
+# readFromPickle(getPDFFilePath()[:])
+
+

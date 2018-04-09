@@ -11,7 +11,7 @@ import json
 URL = ["http://isismc02.smc.edu/isisdoc/web_cat_sched_20163.html","http://isismc02.smc.edu/isisdoc/web_cat_sched_20163.html"]
 PROJECT_NAME = "ClassList"
 CSV_CLASS_TABLE = 'classTable.txt'
-CSV_GRADE_TABLES = ['Spring 2012.csv','Spring 2013.csv','Fall 2012.csv','Fall 2013.csv','Spring 2014.csv','Fall 2014.csv','Spring 2015.csv','Fall 2015.csv']
+CSV_GRADE_TABLES = ['Spring 2012.csv','Spring 2013.csv','Fall 2012.csv','Fall 2013.csv','Spring 2014.csv','Fall 2014.csv','Spring 2015.csv','Fall 2015.csv',]
 CSV_PROCESSED_GRADE_TABLE = 'gradeData.csv'
 CSV_RATEMYPROFESSOR = 'ratemyprofessor.csv'
 CSV_GRADE_ALL = 'allGrade.csv'
@@ -330,4 +330,4 @@ def csv_to_easyui_json(project_name, json_new_class_list):
 
 # read_final_class_list(PROJECT_NAME,CSV_NEW_CLASS_LIST)
 # csv_to_json(PROJECT_NAME,JSON_NEW_CLASS_LIST)
-csv_to_easyui_json(PROJECT_NAME,JSON_EASYUI_NEW_CLASS_LIST)
+# csv_to_easyui_json(PROJECT_NAME,JSON_EASYUI_NEW_CLASS_LIST)

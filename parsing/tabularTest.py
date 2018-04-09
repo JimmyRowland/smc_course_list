@@ -14,6 +14,7 @@ import codecs
 import numpy
 
 
+
 import csv
 from general import *
 import json
@@ -282,6 +283,27 @@ def getTableDataToPickle(pathList):
         # temp= pandas.read_pickle('pickle'+path+'.pickle')
         # print(path)
         # print(temp)
+def tabulaLattice(pathList):
+    create_project_dir("picklepdfFiles")
+
+
+    for path in pathList:
+        regex = re.compile(r"\d{4}")
+        year = re.search(regex, path).group()
+        if "Spring" in path:
+            semester = "Spring"
+        elif "Fall" in path:
+            semester = "Fall"
+        else:
+            semester = "error"
+
+
+        df = tabula.read_pdf(path,pages='all',silent=True,guess=True,lattice=True)
+        df["Year"]=year
+        df["Semester"]=semester
+        print(df)
+        df.to_csv('test/'+path+'.csv')
+        df.to_pickle('pickle'+path+'.pickle')
 
 def readFromPickle(pathList):
     result=[]
@@ -412,6 +434,8 @@ def readFromPickle(pathList):
 
 def abcdpwtotal(fileList, projectName, outputFileName):
     df=pandas.read_pickle('pickleResult.pickle')
+    df=df.fillna(0)
+    print(df.isnull().values.any())
     # print(len(df))
     print(df.columns)
     dictionary={}
@@ -438,8 +462,9 @@ def abcdpwtotal(fileList, projectName, outputFileName):
     for key in dictionary:
         sum = 0
         for index in range(5):
+
             sum += dictionary[key][index]
-            # print(dictionary[key][index],sum, dictionary[key][-1])
+            # print(dictionary[key][index],sum, dictionary[key][-1],dictionary[key][7],key)
             dictionary[key].append((ceil((sum / dictionary[key][7]) * 100)))
         for index in range(5,7):
             # print(dictionary[key][index],dictionary[key][-1],dictionary[key])
@@ -457,9 +482,23 @@ def abcdpwtotal(fileList, projectName, outputFileName):
 # def getPicklePath():
 #     return glob.glob('picklepdfFiles/*.pickle')
 def pickleToCVS():
-    df = pandas.read_pickle('pickleResult.pickle')
-    df.to_csv('grade2012-2016spring.cvs')
 
+    df = pandas.read_pickle('pickleResult.pickle')
+    print(df)
+    for column in df:
+        print(df[column].dtype)
+        try:
+            df = df.fillna[0]
+
+        except Exception as e:
+            print(e)
+        try:
+            df[column] = df[column].apply(str)
+        except Exception as e:
+            print("df[column] = df[column].apply(int)", e)
+        for row in column:
+            print(type(row),type('asdf'))
+    df.to_csv('grade.csv')
 def getPDFFilePath():
     return glob.glob('pdfFiles/*.pdf')
 
@@ -471,5 +510,18 @@ def getClassList():
 
 # getTableDataToPickle(getPDFFilePath()[1:])
 # readFromPickle(getPDFFilePath()[:])
-# abcdpwtotal(CSV_GRADE_TABLES,PROJECT_NAME,GRADE_ALL_JSON)
-pickleToCVS()
+abcdpwtotal(CSV_GRADE_TABLES,PROJECT_NAME,GRADE_ALL_JSON)
+# pickleToCVS()
+
+
+
+
+
+
+
+
+
+# getTableDataToPickle(['pdfFiles/Fall 2016 - Grade Distribution.pdf'])
+# tabulaLattice(['pdfFiles/Santa Monica College -Grade Distribution Fall 2017.pdf','pdfFiles/Santa Monica College -Grade Distribution Spring 2017.pdf'])
+# readFromPickle(['pdfFiles/Spring 2016 Grade Distribution- Report.pdf'])
+# readFromPickle(getPDFFilePath()[:])

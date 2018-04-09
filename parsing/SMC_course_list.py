@@ -5,7 +5,7 @@ import re
 import csv
 
 
-URL = ["https://isiscc.smc.edu/isisdoc/web_cat_sched_20181.html","https://isiscc.smc.edu/isisdoc/web_cat_sched_20180.html"]
+URL = ["https://isiscc.smc.edu/isisdoc/web_cat_sched_20182.html","https://isiscc.smc.edu/isisdoc/web_cat_sched_20183.html"]
 
 PROJECT_NAME = "ClassList"
 PATH = "./"+PROJECT_NAME+"/classTable.txt"
