@@ -134,7 +134,8 @@ def merge_professor_grade_classlist(project_name, json_ratemyprofessor, grade_al
 
                 if not added_to_dic:
                     print('departments do not match, name:',course[6],' ratemypro ', dic_professor[name_key], course)
-                    course_info += [0, 0, 0, 0, 0, 0, 0]
+                    course_info += dic_professor[name_key][0]
+                    # course_info += [0, 0, 0, 0, 0, 0, 0]
         else:
             course_info+=[0, 0, 0, 0, 0, 0, 0]
             print('name not in ratemyprofessor ',course[6],[name_key] ,course)
@@ -251,8 +252,9 @@ def csv_to_easyui_json(project_name, json_new_class_list):
         coursedict['grade_gt_W_rate'] = int(course[18 + halfnumofNewData])
         try:
             coursedict['rating'] = float(course[16+numofNewData])
-        except:
+        except Exception as e:
             coursedict['rating'] = 0
+            print(e,course[16+numofNewData])
         # coursedict['url_text'] = course[17]
         # link
 
@@ -330,4 +332,4 @@ def csv_to_easyui_json(project_name, json_new_class_list):
 
 # read_final_class_list(PROJECT_NAME,CSV_NEW_CLASS_LIST)
 # csv_to_json(PROJECT_NAME,JSON_NEW_CLASS_LIST)
-# csv_to_easyui_json(PROJECT_NAME,JSON_EASYUI_NEW_CLASS_LIST)
+csv_to_easyui_json(PROJECT_NAME,JSON_EASYUI_NEW_CLASS_LIST)
