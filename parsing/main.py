@@ -247,16 +247,16 @@ def csv_to_easyui_json(project_name, json_new_class_list):
         coursedict['grade_gt_W_rate'] = int(course[18 + halfnumofNewData])
         coursedict['transfer'] = course[7]
         coursedict['unit'] = course[-1]
-        if len(course[-3]) >5:
+        if len(course[-3]) >1:
             try:
-                coursedict['rating'] = "<a href='http://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + course[
-                    -3] + "'>" + course[19 + halfnumofNewData] + "</a>"
+                coursedict['votes_num'] = "<a href='http://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + course[
+                    -3] + "'>" + course[33] + "</a>"
 
             except Exception as e:
-                coursedict['rating'] = 0
-                print(e, course[19 + halfnumofNewData] )
+                coursedict['votes_num'] = 0
+                print(e, course[33] )
         else:
-            coursedict['rating'] = float(course[19 + halfnumofNewData])
+            coursedict['votes_num'] = float(course[33])
 
         # coursedict['url_text'] = course[17]
         # link
@@ -266,7 +266,11 @@ def csv_to_easyui_json(project_name, json_new_class_list):
         # coursedict['fname_text'] = course[20]
         # coursedict['tid_id'] = int(course[21])
         # url = course[17]
-        coursedict['votes_num'] = int(course[33])
+        try:
+            coursedict['rating'] = float(course[19+ halfnumofNewData])
+        except:
+            print(course[19 + halfnumofNewData], "error rating")
+            coursedict['rating'] = 0
         temp = '' + course[2]
         temp = temp.split(',')
         # if course[1]=="HIST 15":
