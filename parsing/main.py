@@ -169,46 +169,42 @@ def csv_to_json(project_name,json_new_class_list):
     list = []
     pk=1
     finalCourseList = read_final_class_list(PROJECT_NAME,CSV_NEW_CLASS_LIST)
-    # print(finalCourseList)
+    print(finalCourseList)
+    courseListLen = 18
     for course in finalCourseList:
         coursedict = {}
         coursedict['department_text'] = course[0]
         coursedict['course_text']=course[1]
         coursedict['igetc_text'] = course[2]
         coursedict['session_id'] = int(course[3])
-        if len(course[4].split()) == 1:
-            coursedict['Time'] = course[4].split()[0]
-            coursedict['Weekday'] = 'None'
-        else:
-            coursedict['Time'] = course[4].split()[0]
-            coursedict['Weekday'] = course[4].split()[1]
-
+        coursedict['Time']= course[9]
+        coursedict['Weekday'] = course[10]
         coursedict['location_text'] = course[5]
         coursedict['instructor_text'] = course[6]
-        coursedict['grade_A_num'] = int(course[7])
-        coursedict['grade_B_num'] = int(course[8])
-        coursedict['grade_C_num'] = int(course[9])
-        coursedict['grade_P_num'] = int(course[10])
-        coursedict['grade_total_num'] = int(course[11])
-        coursedict['grade_A_rate'] = int(course[12])
-        coursedict['grade_gt_B_rate'] = int(course[13])
-        coursedict['grade_gt_C_rate'] = int(course[14])
-        coursedict['grade_gt_P_rate'] = int(course[15])
+        coursedict['grade_A_num'] = int(course[courseListLen+0])
+        coursedict['grade_B_num'] = int(course[courseListLen+1])
+        coursedict['grade_C_num'] = int(course[courseListLen+2])
+        coursedict['grade_P_num'] = int(course[courseListLen+3])
+        coursedict['grade_total_num'] = int(course[courseListLen+4])
+        coursedict['grade_A_rate'] = int(course[courseListLen+5])
+        coursedict['grade_gt_B_rate'] = int(course[courseListLen+6])
+        coursedict['grade_gt_C_rate'] = int(course[courseListLen+7])
+        coursedict['grade_gt_P_rate'] = int(course[courseListLen+8])
         try:
-            coursedict['rating'] = float(course[16])
+            coursedict['rating'] = float(course[courseListLen+9])
         except:
             coursedict['rating'] = 0
-        if len(course[17]) > 5:
-            coursedict['Instructor'] = "<a href='" + course[17] + "'>" + course[6] + "</a>"
+        if len(course[courseListLen+10]) > 5:
+            coursedict['Instructor'] = "<a href='" + course[courseListLen+10] + "'>" + course[6] + "</a>"
         else:
             coursedict['Instructor'] = course[6]
-        coursedict['url_text'] = course[17]
-        coursedict['instructor_department_text'] = course[18]
-        coursedict['lname_text'] = course[19]
-        coursedict['fname_text'] = course[20]
-        coursedict['tid_id'] = int(course[21])
-        coursedict['votes_num'] = int(course[22])
-        coursedict['semester']=course[23]
+        coursedict['url_text'] = course[courseListLen+10]
+        coursedict['instructor_department_text'] = course[courseListLen+11]
+        coursedict['lname_text'] = course[courseListLen+12]
+        coursedict['fname_text'] = course[courseListLen+13]
+        coursedict['tid_id'] = int(course[courseListLen+14])
+        coursedict['votes_num'] = int(course[courseListLen+15])
+        coursedict['semester']=course[courseListLen+16]
         list.append({"model":"classList.CourseList",'pk':pk+201710000,'fields':coursedict})
         # print(coursedict)
         pk +=1
@@ -223,38 +219,45 @@ def csv_to_easyui_json(project_name, json_new_class_list):
     finalCourseList = read_final_class_list(PROJECT_NAME, CSV_NEW_CLASS_LIST)
     # print(finalCourseList)
     for course in finalCourseList:
+
         numofNewData=6
-        halfnumofNewData=3
+        halfnumofNewData=8
         coursedict = {}
         # coursedictlist=[{},{},{}]
-        coursedict['Semester'] = course[23+numofNewData]
+        print(course, course[12 + halfnumofNewData], int(course[15+halfnumofNewData]))
+
+        coursedict['Semester'] = course[11]
         coursedict['Department'] = course[0]
         coursedict['Course'] = course[1]+' '
 
         coursedict['Session_id'] = int(course[3])
-        if len(course[4].split()) == 1:
-            coursedict['Time'] = course[4].split()[0]
-            coursedict['Weekday'] = 'None'
-        else:
-            coursedict['Time'] = course[4].split()[0]
-            coursedict['Weekday'] = course[4].split()[1]
+        coursedict['Time'] = "<br>".join(course[9].split('\n'))
+        coursedict['Weekday'] = "<br>".join(course[10].split('\n'))
         coursedict['Location'] = course[5]
         coursedict['InstructorName'] = course[6]
         # coursedict['grade_A_sum'] = int(course[7])
         # coursedict['grade_B_sum'] = int(course[8])
         # coursedict['grade_C_sum'] = int(course[9])
         # coursedict['grade_P_sum'] = int(course[10])
-        coursedict['numberOfStudents'] = int(course[11])
+        # coursedict['numberOfStudents'] = int(course[11])
         coursedict['grade_A_rate'] = int(course[12+halfnumofNewData])
         coursedict['grade_gt_B_rate'] = int(course[13+halfnumofNewData])
         coursedict['grade_gt_C_rate'] = int(course[14+halfnumofNewData])
         coursedict['grade_gt_P_rate'] = int(course[15+halfnumofNewData])
         coursedict['grade_gt_W_rate'] = int(course[18 + halfnumofNewData])
-        try:
-            coursedict['rating'] = float(course[16+numofNewData])
-        except Exception as e:
-            coursedict['rating'] = 0
-            print(e,course[16+numofNewData])
+        coursedict['transfer'] = course[7]
+        coursedict['unit'] = course[-1]
+        if len(course[-3]) >5:
+            try:
+                coursedict['rating'] = "<a href='http://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + course[
+                    -3] + "'>" + course[19 + halfnumofNewData] + "</a>"
+
+            except Exception as e:
+                coursedict['rating'] = 0
+                print(e, course[19 + halfnumofNewData] )
+        else:
+            coursedict['rating'] = float(course[19 + halfnumofNewData])
+
         # coursedict['url_text'] = course[17]
         # link
 
@@ -263,7 +266,7 @@ def csv_to_easyui_json(project_name, json_new_class_list):
         # coursedict['fname_text'] = course[20]
         # coursedict['tid_id'] = int(course[21])
         # url = course[17]
-        coursedict['votes_num'] = int(course[22+numofNewData])
+        coursedict['votes_num'] = int(course[33])
         temp = '' + course[2]
         temp = temp.split(',')
         # if course[1]=="HIST 15":
@@ -311,10 +314,9 @@ def csv_to_easyui_json(project_name, json_new_class_list):
                 #             coursedictlist[i]['igetcFilter'] = temp[i][0]
                 #             coursedictlist[i]['igetc'] = course[2]
 
-        if len(course[17+numofNewData]) >5:
-            coursedict['Instructor'] = "<a href='" + course[17+numofNewData] + "'>" + course[6] + "</a>"
-        else:
-            coursedict['Instructor'] = course[6]
+
+        coursedict['Instructor'] = "<a href='https://www.proffinder.com/" + "_".join(course[6].split(' ')) + "'>" + course[6]+  "</a>"
+
 
         # coursedict['Instructor'] = "<a href='" + course[17] + "'>" + course[6] + "</a>" + ' ' + course[3]+''+coursedict['Time'] + ' ' + coursedict['Weekday'] + ' ' + coursedict['Location']
         list.append(coursedict)

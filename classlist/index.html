@@ -6,7 +6,7 @@
         <meta property="og:description" content="Easy access to Ratemyprofessor pages">
         <meta property="og:image" content="https://collegexam.files.wordpress.com/2017/11/smcgradedistribution2-min.png">
         <meta property="og:url" content="https://jimmyrowland.github.io/smc_course_list/classlist/">
-        <title>SMC class list + grade distribution</title>
+        <title>2019 Spring SMC class list + grade distribution</title>
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="./static/themes/default/easyui.css">
@@ -66,13 +66,13 @@
                 multiSort:false,collapsible:false,url:'./static/finalEasyuiClassList.json',method:'get'">
             <thead>
                 <tr>
-                    <th data-options="field:'Department',width:210">Department</th>
-                    <th data-options="field:'Course',width:100">Course</th>
-                    <th data-options="field:'Instructor',width:100,align:'center'">Instructor</th>
+                    <th data-options="field:'Department',width:110">Department</th>
+                    <th data-options="field:'Course',width:150">Course</th>
+                    <th data-options="field:'Instructor',width:120,align:'center'">Instructor</th>
                     <th data-options="field:'Session_id',width:40,align:'right'">ID</th>
                     <th data-options="field:'Time',width:120,align:'right'">Time</th>
-                    <th data-options="field:'Weekday',width:40">Day</th>
-                    <th data-options="field:'Location',width:120,align:'center'">Location</th>
+                    <th data-options="field:'Weekday',width:70">Day</th>
+                    <th data-options="field:'Location',width:100,align:'center'">Location</th>
                      <th data-options="field:'grade_A_rate',width:50,align:'center',sortable:'true',order:'desc'">A%</th>
                      <th data-options="field:'grade_gt_B_rate',width:50,align:'center',sortable:'true',order:'desc'">gtB%</th>
                      <th data-options="field:'grade_gt_C_rate',width:50,align:'center',sortable:'true',order:'desc'">gtC%</th>
@@ -80,8 +80,10 @@
                     <th data-options="field:'grade_gt_W_rate',width:50,align:'center',sortable:'true',order:'desc'">gtW%</th>
                      <th data-options="field:'rating',width:50,align:'center',sortable:'true',order:'desc'">rating</th>
                      <th data-options="field:'votes_num',width:50,align:'center',sortable:'true',order:'desc'">votes</th>
-                     <th data-options="field:'igetc',width:130,align:'center'">igetc</th>
-                    <th data-options="field:'Semester',width:120,align:'right'">semester</th>
+                     <th data-options="field:'igetc',width:80,align:'center'">igetc</th>
+                    <th data-options="field:'Semester',width:80,align:'right'">semester</th>
+                     <th data-options="field:'unit',width:30,align:'right'">unit</th>
+                    <th data-options="field:'transfer',width:50,align:'right'">transfer</th>
 
                 </tr>
             </thead>

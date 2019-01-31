@@ -11,13 +11,29 @@ import pdfquery
 from pdfquery.cache import FileCache
 from math import ceil
 
+PROJECT_NAME = "ClassList"
+CSV_GRADE_ALL = 'allGrade.csv'
+GRADE_ALL_JSON = 'allGrade.json'
+
+# def getYearSemesterYear(path):
+#     # broken
+#     pdf = pdfquery.PDFQuery(path, parse_tree_cacher=FileCache("/tmp/"))
+#     pdf.load(0)
+#     lable = pdf.pq('LTTextLineHorizontal:contains("Santa Monica College")').text()
+#     regex = re.compile(r"\d{4}")
+#     year = re.search(regex, lable).group()
+#     if "Spring" in lable:
+#         semester = "Spring"
+#     elif "Fall" in lable:
+#         semester = "Fall"
+#     else:
+#         semester = "error"
+#     return {'year': year, 'semester': semester}
 
 def getColumnCoordinatesSemesterYear(path):
 
     pdf = pdfquery.PDFQuery(path,parse_tree_cacher=FileCache("/tmp/"))
     pdf.load(0)
-
-
     lable = pdf.pq('LTTextLineHorizontal:contains("Santa Monica College")').text()
     regex = re.compile(r"\d{4}")
     year = re.search(regex, lable).group()
@@ -252,8 +268,8 @@ def getTableDataToPickle(pathList):
         # print(len(columncoordinate),columncoordinate)
         # print(columncoordinate[1:])
         # df = tabula.read_pdf(path,pages=[22],silent=True,guess=False,columns=columncoordinate[2:])
-
-        df = tabula.read_pdf(path,pages='all',silent=True,guess=False,columns=columncoordinate[0:])
+        print(columncoordinate)
+        df = tabula.read_pdf(path,pages='all',silent=True,guess=True,columns=columncoordinate[0:])
         df["Year"]=year
         df["Semester"]=semester
         df.to_csv('test/'+path+'.csv')
@@ -269,6 +285,53 @@ def getTableDataToPickle(pathList):
         # temp= pandas.read_pickle('pickle'+path+'.pickle')
         # print(path)
         # print(temp)
+
+def getTableDataWithPreDefinedColumnsToPickle(pathList):
+    create_project_dir("picklepdfFiles")
+    yearSemesterList=[
+        [2018,"Spring"]
+    ]
+    columncoordinateList=[
+        [37,78,110,152,192,272,290,320,350,375,400,430,460,483,510,535,560],
+    ]
+    areaList=[
+        [48,37,365,562]
+    ]
+
+    for index, path in enumerate(pathList):
+        # Broken
+        # yearSemesterObject=getYearSemesterYear(path)
+        columncoordinate = columncoordinateList[index][1:]
+        year=yearSemesterList[index][0]
+        semester=yearSemesterList[index][1]
+
+        columncoordinate.sort()
+        # temp=[79.095, 135.415, 195.91, 254.311, 335.386, 379.04, 403.338, 427.479, 451.73, 475.497, 500.562, 524.322, 551.782, 572.548, 596.632, 623.319, 660.992]
+        # print(len(temp),temp)
+        # columncoordinate=columncoordinate[1:]
+        # print(len(columncoordinate),columncoordinate)
+        # print(columncoordinate[1:])
+        # df = tabula.read_pdf(path,pages=[22],silent=True,guess=False,columns=columncoordinate[2:])
+        print(columncoordinate)
+        df = tabula.read_pdf(path,pages='all',silent=True,guess=False,columns=columncoordinate[0:],area=areaList[index])
+        df["Year"]=year
+        df["Semester"]=semester
+        df.to_csv('test/'+path+'.csv')
+        # print(df)
+        # print([20+x for x in range(2)])
+        # print(tabula.read_pdf(path, pages=[27], silent=True,columns=[163.88, 219.81, 289.27, 372.68, 397.36, 421.33, 445.27]))
+        # print(tabula.read_pdf(path,pages=[22],silent=True,guess=False,columns=columncoordinate[:-1]))
+        # print(tabula.read_pdf(path, pages=[23], silent=True,columns=columncoordinate[1:],output_path='temp'))
+        # print(tabula.read_pdf(path, pages=[24], silent=True))
+        # print(tabula.read_pdf(path, pages=[25], silent=True))
+        # print(df)
+        df.to_pickle('pickle'+path+'.pickle')
+        df.to_csv('test/' + path + '.csv')
+        # temp= pandas.read_pickle('pickle'+path+'.pickle')
+        # print(path)
+        # print(temp)
+
+
 def tabulaLattice(pathList):
     create_project_dir("picklepdfFiles")
 
@@ -352,7 +415,6 @@ def readFromPickle(pathList):
                 # # print(df[df[str].str.isalpha()])
                 df[str] = df[str].apply(int)
                 return df
-
             def fixHeaderSwitch(correctHeader,column,df):
                 # print(df)
                 # print(correctHeader,column)
@@ -362,7 +424,7 @@ def readFromPickle(pathList):
                     df[column] = df[column].apply(fixDDRcolumn)
 
                 elif len(column) < 3:
-
+                    print("abcde", column)
 
                     df[column] = df[column].fillna(0)
                     df[column] = df[column].apply(int)
@@ -370,9 +432,12 @@ def readFromPickle(pathList):
                     # if (column == 'W'):
                     #     print(df[column])
                 elif "Total" in column:
+                    print("Total",column)
                     try:
-                        df=df.fillna[0]
-                        df[column]=df[column].fillna[0]
+                        print("fixTotalNa", df, df[column])
+                        df=df.fillna(0)
+                        print("fixTotalNa", df, df[column])
+                        df[column]=df[column].fillna(0)
 
                     except Exception as e:
                         print(e)
@@ -383,6 +448,8 @@ def readFromPickle(pathList):
                 df = df.rename(columns={column: correctHeader})
 
                 return df
+
+
             for column in df:
                 if column in correctHeader:
                     # print('if')
@@ -496,9 +563,9 @@ def getClassList():
     print(classList)
 
 # getTableDataToPickle(getPDFFilePath()[1:])
-# readFromPickle(getPDFFilePath()[:])
-# abcdpwtotal()
-# pickleToCVS()
+readFromPickle(getPDFFilePath()[:])
+abcdpwtotal()
+pickleToCVS()
 
 
 
@@ -507,8 +574,9 @@ def getClassList():
 
 
 
-# getTableDataToPickle(['pdfFiles/Fall 2016 - Grade Distribution.pdf'])
-# tabulaLattice(['pdfFiles/Santa Monica College -Grade Distribution Fall 2017.pdf','pdfFiles/Santa Monica College -Grade Distribution Spring 2017.pdf'])
+# getTableDataToPickle(['pdfFiles/Spring 2018.pdf'])
+# tabulaLattice(['pdfFiles/Spring 2018.pdf'])
+# getTableDataWithPreDefinedColumnsToPickle(['pdfFiles/Spring 2018.pdf'])
 # readFromPickle(['pdfFiles/Spring 2016 Grade Distribution- Report.pdf'])
 # readFromPickle(getPDFFilePath()[:])
 

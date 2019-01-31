@@ -9,6 +9,8 @@ smc_course_list
 <a href="https://jimmyrowland.github.io/smc_course_list/classlist/2017spring/">History: 2017 spring/winter</a>
 <br>
 <a href="https://jimmyrowland.github.io/smc_course_list/classlist/2017fall">2017 summer & fall</a>
+<br>
+<a href="https://jimmyrowland.github.io/smc_course_list/classlist/2018fall">2018 summer & fall</a>
 
 <pre>
 To do list:
