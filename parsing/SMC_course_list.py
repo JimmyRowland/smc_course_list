@@ -299,9 +299,41 @@ def read_class_list(project_name, csv_class_list):
         readCSV = csv.reader(csvfile, delimiter='\t')
         # print(readCSV)
         return list(readCSV)
+def courseDescriptionForApplication(localFile, project_name, csv_class_list):
+    with open(get_path(project_name,csv_class_list),'r') as courseDesFile:
+        readCourseDesFile = csv.reader(courseDesFile,delimiter='\t')
+        # print("readCourseDesFilelist",list(readCourseDesFile))
+        something=list(readCourseDesFile)
+        result=[]
+        print("afterlist",something)
+        with open("/mnt/9EA6C149A6C1231F/OneDrive/ubuntu download/tabula-rwservlet (1).csv", 'r') as coursesfile:
+            readCourses = csv.reader(coursesfile)
+            courses=list(readCourses)
 
+
+            for course in courses:
+                # print(course[-1])
+                i = 0
+                while(i<len(something)):
+                    # print("test",i,something[i], course[0])
+                    if something[i][1]==course[0]:
+                        resultString = f'<h2><a href="https://smccis.smc.edu/isisdoc/web_cat_sched_20191.html#{"-".join(course[0].split(" "))}" >{course[0]}</a>, {something[i][-1]} Unit</h2><p>{something[i][8]}</p>'
+                        result.append([resultString])
+                        print(resultString)
+                        i+=1
+                        break
+                    i+=1
+
+            with open("./htmlfile.cvs","w",newline='') as htmlfile:
+                writeCSV = csv.writer(htmlfile, delimiter='\t')
+                writeCSV.writerows(result)
+            print(list(readCourses))
+        # print(readCourseDesFile)
+
+        # print(list(readCourseDesFile)[0])
 
 get_course_list(localFile,PROJECT_NAME,CSV_CLASS_LIST)
+# courseDescriptionForApplication(localFile,PROJECT_NAME,CSV_CLASS_LIST)
 # read_class_list(PROJECT_NAME, CSV_CLASS_LIST)
 
 
